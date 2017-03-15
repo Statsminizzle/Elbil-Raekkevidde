@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "121569512083",
+    "firebase_url": "https://elbil-raekkevidde.firebaseio.com",
+    "project_id": "elbil-raekkevidde",
+    "storage_bucket": "elbil-raekkevidde.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121569512083:android:ff8a51c304c91476",
+        "android_client_info": {
+          "package_name": "elbil.raekkevidde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121569512083-a4goqgnlb9570j9r5kutvtb46lhashnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "elbil.raekkevidde",
+            "certificate_hash": "460d5f86a1ecca2a75545d91a01e639f6a0fbba3"
+          }
+        },
+        {
+          "client_id": "121569512083-je3rfpgo6tp2brhv8vif1j8n0v2ih563.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXHuhEiyTJWR5jH3aYQXUcIsX7Wf3GUEI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121569512083-je3rfpgo6tp2brhv8vif1j8n0v2ih563.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
