@@ -2,15 +2,15 @@ package elbil.raekkevidde.obdConnection.io;
 
 import android.util.Log;
 
-import com.github.pires.obd.commands.protocol.EchoOffCommand;
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
-import com.github.pires.obd.commands.protocol.ObdResetCommand;
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.commands.protocol.TimeoutCommand;
-import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
-import com.github.pires.obd.enums.ObdProtocols;
-import com.github.pires.obd.reader.activity.MainActivity;
-import com.github.pires.obd.reader.io.ObdCommandJob.ObdCommandJobState;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.EchoOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.LineFeedOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.SelectProtocolCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.TimeoutCommand;
+import elbil.raekkevidde.obdJavaApi.commands.temperature.AmbientAirTemperatureCommand;
+import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
+import elbil.raekkevidde.obdConnection.activity.MainActivity;
+import elbil.raekkevidde.obdConnection.io.ObdCommandJob.ObdCommandJobState;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -92,12 +92,12 @@ public class MockObdGatewayService extends AbstractGatewayService {
                 Log.d(TAG, "Job is finished.");
                 job.setState(ObdCommandJobState.FINISHED);
                 final ObdCommandJob job2 = job;
-                ((MainActivity) ctx).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((MainActivity) ctx).stateUpdate(job2);
-                    }
-                });
+ //               ((MainActivity) ctx).runOnUiThread(new Runnable() {
+  //                  @Override
+    //                public void run() {
+      //                  ((MainActivity) ctx).stateUpdate(job2);
+        //            }
+          //      });
 
             }
         }

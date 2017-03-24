@@ -3,7 +3,7 @@
  */
 package elbil.raekkevidde.obdConnection.io;
 
-import com.github.pires.obd.commands.ObdCommand;
+import elbil.raekkevidde.obdJavaApi.commands.ObdCommand;
 
 /**
  * This class represents a job that ObdGatewayService will have to execute and

@@ -12,19 +12,19 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.github.pires.obd.commands.protocol.EchoOffCommand;
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
-import com.github.pires.obd.commands.protocol.ObdResetCommand;
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.commands.protocol.TimeoutCommand;
-import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
-import com.github.pires.obd.enums.ObdProtocols;
-import com.github.pires.obd.exceptions.UnsupportedCommandException;
-import com.github.pires.obd.reader.R;
-import com.github.pires.obd.reader.activity.ConfigActivity;
-import com.github.pires.obd.reader.activity.MainActivity;
-import com.github.pires.obd.reader.io.ObdCommandJob.ObdCommandJobState;
-import com.google.inject.Inject;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.EchoOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.LineFeedOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.SelectProtocolCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.TimeoutCommand;
+import elbil.raekkevidde.obdJavaApi.commands.temperature.AmbientAirTemperatureCommand;
+import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
+import elbil.raekkevidde.obdJavaApi.exceptions.UnsupportedCommandException;
+//import elbil.raekkevidde.obdConnection.reader.R;
+import elbil.raekkevidde.obdConnection.activity.ConfigActivity;
+import elbil.raekkevidde.obdConnection.activity.MainActivity;
+import elbil.raekkevidde.obdConnection.io.ObdCommandJob.ObdCommandJobState;
+//import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import java.io.IOException;
 public class ObdGatewayService extends AbstractGatewayService {
 
     private static final String TAG = ObdGatewayService.class.getName();
-    @Inject
+    //@Inject
     SharedPreferences prefs;
 
     private BluetoothDevice dev = null;
@@ -52,7 +52,7 @@ public class ObdGatewayService extends AbstractGatewayService {
         // get the remote Bluetooth device
         final String remoteDevice = prefs.getString(ConfigActivity.BLUETOOTH_LIST_KEY, null);
         if (remoteDevice == null || "".equals(remoteDevice)) {
-            Toast.makeText(ctx, getString(R.string.text_bluetooth_nodevice), Toast.LENGTH_LONG).show();
+         //TODO   Toast.makeText(ctx, getString(R.string.text_bluetooth_nodevice), Toast.LENGTH_LONG).show();
 
             // log error
             Log.e(TAG, "No Bluetooth device has been selected.");
@@ -83,7 +83,7 @@ public class ObdGatewayService extends AbstractGatewayService {
             Log.d(TAG, "Stopping Bluetooth discovery.");
             btAdapter.cancelDiscovery();
 
-            showNotification(getString(R.string.notification_action), getString(R.string.service_starting), R.drawable.ic_btcar, true, true, false);
+      //TODO      showNotification(getString(R.string.notification_action), getString(R.string.service_starting), R.drawable.ic_btcar, true, true, false);
 
             try {
                 startObdConnection();
@@ -98,7 +98,7 @@ public class ObdGatewayService extends AbstractGatewayService {
                 stopService();
                 throw new IOException();
             }
-            showNotification(getString(R.string.notification_action), getString(R.string.service_started), R.drawable.ic_btcar, true, true, false);
+         //TODO   showNotification(getString(R.string.notification_action), getString(R.string.service_started), R.drawable.ic_btcar, true, true, false);
         }
     }
 
@@ -217,12 +217,13 @@ public class ObdGatewayService extends AbstractGatewayService {
 
             if (job != null) {
                 final ObdCommandJob job2 = job;
-                ((MainActivity) ctx).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((MainActivity) ctx).stateUpdate(job2);
-                    }
-                });
+   //             ((MainActivity) ctx).runOnUiThread(new Runnable() {
+    //                @Override
+     //               public void run() {
+      //                  ((MainActivity) ctx).stateUpdate(job2);
+        //
+          //          }
+           //TODO     });
             }
         }
     }
@@ -246,7 +247,7 @@ public class ObdGatewayService extends AbstractGatewayService {
             }
 
         // kill service
-        stopSelf();
+       //TODO stopSelf();
     }
 
     public boolean isRunning() {

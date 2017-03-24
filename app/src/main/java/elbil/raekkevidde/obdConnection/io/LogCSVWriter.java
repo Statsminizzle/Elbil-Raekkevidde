@@ -3,7 +3,7 @@ package elbil.raekkevidde.obdConnection.io;
 import android.os.Environment;
 import android.util.Log;
 
-import com.github.pires.obd.reader.net.ObdReading;
+import elbil.raekkevidde.obdConnection.net.ObdReading;
 
 import java.io.BufferedWriter;
 import java.io.File;

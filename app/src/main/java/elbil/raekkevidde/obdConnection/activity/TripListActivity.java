@@ -9,16 +9,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.github.pires.obd.reader.R;
-import com.github.pires.obd.reader.trips.TripListAdapter;
-import com.github.pires.obd.reader.trips.TripLog;
-import com.github.pires.obd.reader.trips.TripRecord;
+import elbil.raekkevidde.R;
+import elbil.raekkevidde.obdConnection.trips.TripListAdapter;
+import elbil.raekkevidde.obdConnection.trips.TripLog;
+import elbil.raekkevidde.obdConnection.trips.TripRecord;
 
 import java.util.List;
 
 import roboguice.activity.RoboActivity;
 
-import static com.github.pires.obd.reader.activity.ConfirmDialog.createDialog;
+import static elbil.raekkevidde.obdConnection.activity.ConfirmDialog.createDialog;
 
 /**
  * Some code taken from https://github.com/wdkapps/FillUp
@@ -38,9 +38,9 @@ public class TripListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trips_list);
+        //setContentView(R.layout.activity_trips_list);
 
-        ListView lv = (ListView) findViewById(R.id.tripList);
+        ListView lv = (ListView) findViewById(1/*R.id.tripList*/);
 
         triplog = TripLog.getInstance(this.getApplicationContext());
         records = triplog.readAllRecords();
@@ -64,7 +64,7 @@ public class TripListActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.activity_main /*R.id.action_settings*/) {
             return true;
         }
 
@@ -75,7 +75,7 @@ public class TripListActivity
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         // create the menu
-        getMenuInflater().inflate(R.menu.context_trip_list, menu);
+        //getMenuInflater().inflate(/*R.menu.context_trip_list*/, menu);
 
         // get index of currently selected row
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -109,7 +109,7 @@ public class TripListActivity
         selectedRow = (int) info.id;
 
         switch (item.getItemId()) {
-            case R.id.itemDelete:
+            case R.id.activity_main: //R.id.itemDelete:
                 showDialog(ConfirmDialog.DIALOG_CONFIRM_DELETE_ID);
                 return true;
 

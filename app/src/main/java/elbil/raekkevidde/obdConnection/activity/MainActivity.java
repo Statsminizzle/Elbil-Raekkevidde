@@ -37,23 +37,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.pires.obd.commands.ObdCommand;
-import com.github.pires.obd.commands.SpeedCommand;
-import com.github.pires.obd.commands.engine.RPMCommand;
-import com.github.pires.obd.commands.engine.RuntimeCommand;
-import com.github.pires.obd.enums.AvailableCommandNames;
-import com.github.pires.obd.reader.R;
-import com.github.pires.obd.reader.config.ObdConfig;
-import com.github.pires.obd.reader.io.AbstractGatewayService;
-import com.github.pires.obd.reader.io.LogCSVWriter;
-import com.github.pires.obd.reader.io.MockObdGatewayService;
-import com.github.pires.obd.reader.io.ObdCommandJob;
-import com.github.pires.obd.reader.io.ObdGatewayService;
-import com.github.pires.obd.reader.io.ObdProgressListener;
-import com.github.pires.obd.reader.net.ObdReading;
-import com.github.pires.obd.reader.net.ObdService;
-import com.github.pires.obd.reader.trips.TripLog;
-import com.github.pires.obd.reader.trips.TripRecord;
+import elbil.raekkevidde.obdJavaApi.commands.ObdCommand;
+import elbil.raekkevidde.obdJavaApi.commands.SpeedCommand;
+import elbil.raekkevidde.obdJavaApi.commands.engine.RPMCommand;
+import elbil.raekkevidde.obdJavaApi.commands.engine.RuntimeCommand;
+import elbil.raekkevidde.obdJavaApi.enums.AvailableCommandNames;
+import elbil.raekkevidde.R;
+import elbil.raekkevidde.obdConnection.config.ObdConfig;
+import elbil.raekkevidde.obdConnection.io.AbstractGatewayService;
+import elbil.raekkevidde.obdConnection.io.LogCSVWriter;
+import elbil.raekkevidde.obdConnection.io.MockObdGatewayService;
+import elbil.raekkevidde.obdConnection.io.ObdCommandJob;
+import elbil.raekkevidde.obdConnection.io.ObdGatewayService;
+import elbil.raekkevidde.obdConnection.io.ObdProgressListener;
+//import elbil.raekkevidde.obdConnection..net.ObdReading;
+//import elbil.raekkevidde.obdConnection..net.ObdService;
+//import elbil.raekkevidde.obdConnection..trips.TripLog;
+//import elbil.raekkevidde.obdConnection..trips.TripRecord;
 import com.google.inject.Inject;
 
 import java.io.FileNotFoundException;
@@ -64,21 +64,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+//import retrofit.RestAdapter;
+//import retrofit.RetrofitError;
+//import retrofit.client.Response;
 import roboguice.RoboGuice;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
-import static com.github.pires.obd.reader.activity.ConfigActivity.getGpsDistanceUpdatePeriod;
-import static com.github.pires.obd.reader.activity.ConfigActivity.getGpsUpdatePeriod;
+import static elbil.raekkevidde.obdConnection.activity.ConfigActivity.getGpsDistanceUpdatePeriod;
+import static elbil.raekkevidde.obdConnection.activity.ConfigActivity.getGpsUpdatePeriod;
 
 // Some code taken from https://github.com/barbeau/gpstest
 
-@ContentView(R.layout.main)
-public class MainActivity extends RoboActivity implements ObdProgressListener, LocationListener, GpsStatus.Listener {
+//@ContentView(R.layout.main)
+public class MainActivity /*extends RoboActivity implements ObdProgressListener, LocationListener, GpsStatus.Listener*/ {
 
     private static final String TAG = MainActivity.class.getName();
     private static final int NO_BLUETOOTH_ID = 0;
@@ -106,7 +106,7 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     private LogCSVWriter myCSVWriter;
     private Location mLastLocation;
     /// the trip log
-    private TripLog triplog;
+  /*  private TripLog triplog;
     private TripRecord currentTrip;
 
     @InjectView(R.id.compass_text)
@@ -377,6 +377,8 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     /**
      * If lock is held, release. Lock will be held when the service is running.
      */
+
+  /*
     private void releaseWakeLockIfHeld() {
         if (wakeLock.isHeld())
             wakeLock.release();
@@ -596,6 +598,8 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     /**
      *
      */
+
+  /*
     private void queueCommands() {
         if (isServiceBound) {
             for (ObdCommand Command : ObdConfig.getCommands()) {
@@ -677,11 +681,15 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     }
 
     private synchronized void gpsStart() {
-        if (!mGpsIsStarted && mLocProvider != null && mLocService != null && mLocService.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            mLocService.requestLocationUpdates(mLocProvider.getName(), ConfigActivity.getGpsUpdatePeriod(prefs), ConfigActivity.getGpsDistanceUpdatePeriod(prefs), this);
-            mGpsIsStarted = true;
-        } else {
-            gpsStatusTextView.setText(getString(R.string.status_gps_no_support));
+        try {
+            if (!mGpsIsStarted && mLocProvider != null && mLocService != null && mLocService.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                mLocService.requestLocationUpdates(mLocProvider.getName(), ConfigActivity.getGpsUpdatePeriod(prefs), ConfigActivity.getGpsDistanceUpdatePeriod(prefs), this);
+                mGpsIsStarted = true;
+            } else {
+                gpsStatusTextView.setText(getString(R.string.status_gps_no_support));
+            }
+        } catch (SecurityException e){
+            Log.d("Security Exception", e);
         }
     }
 
@@ -696,6 +704,8 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     /**
      * Uploading asynchronous task
      */
+
+  /*
     private class UploadAsyncTask extends AsyncTask<ObdReading, Void, Void> {
 
         @Override
@@ -722,4 +732,5 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
         }
 
     }
+    */
 }

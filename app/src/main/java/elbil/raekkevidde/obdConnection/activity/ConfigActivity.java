@@ -19,16 +19,16 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
-import com.github.pires.obd.commands.ObdCommand;
-import com.github.pires.obd.enums.ObdProtocols;
-import com.github.pires.obd.reader.R;
-import com.github.pires.obd.reader.config.ObdConfig;
+import elbil.raekkevidde.obdJavaApi.commands.ObdCommand;
+import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
+//import elbil.raekkevidde.obdConnection..R;
+import elbil.raekkevidde.obdConnection.config.ObdConfig;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * Configuration com.github.pires.obd.reader.activity.
+ * Configuration elbil.raekkevidde.obdConnection..activity.
  */
 public class ConfigActivity extends PreferenceActivity implements OnPreferenceChangeListener {
 
@@ -194,7 +194,7 @@ public class ConfigActivity extends PreferenceActivity implements OnPreferenceCh
     /*
      * Read preferences resources available at res/xml/preferences.xml
      */
-        addPreferencesFromResource(R.xml.preferences);
+        //TODO addPreferencesFromResource(R.xml.preferences);
 
         checkGps();
 
@@ -330,10 +330,10 @@ public class ConfigActivity extends PreferenceActivity implements OnPreferenceCh
 
     private void hideGPSCategory() {
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-        PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.pref_gps_category));
-        if (preferenceCategory != null) {
-            preferenceCategory.removeAll();
-            preferenceScreen.removePreference((Preference) preferenceCategory);
-        }
+       //TODO PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.pref_gps_category));
+    //    if (preferenceCategory != null) {
+    //        preferenceCategory.removeAll();
+     //       preferenceScreen.removePreference((Preference) preferenceCategory);
+      //  }
     }
 }

@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.github.pires.obd.reader.activity.MainActivity;
+import elbil.raekkevidde.obdConnection.activity.MainActivity;
 import com.google.inject.Inject;
 
 import java.io.IOException;

@@ -22,18 +22,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.github.pires.obd.commands.control.TroubleCodesCommand;
-import com.github.pires.obd.commands.protocol.EchoOffCommand;
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
-import com.github.pires.obd.commands.protocol.ObdResetCommand;
-import com.github.pires.obd.commands.protocol.ResetTroubleCodesCommand;
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.enums.ObdProtocols;
-import com.github.pires.obd.exceptions.MisunderstoodCommandException;
-import com.github.pires.obd.exceptions.NoDataException;
-import com.github.pires.obd.exceptions.UnableToConnectException;
-import com.github.pires.obd.reader.R;
-import com.github.pires.obd.reader.io.BluetoothManager;
+import elbil.raekkevidde.obdJavaApi.commands.control.TroubleCodesCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.EchoOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.LineFeedOffCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.ResetTroubleCodesCommand;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.SelectProtocolCommand;
+import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
+import elbil.raekkevidde.obdJavaApi.exceptions.MisunderstoodCommandException;
+import elbil.raekkevidde.obdJavaApi.exceptions.NoDataException;
+import elbil.raekkevidde.obdJavaApi.exceptions.UnableToConnectException;
+import elbil.raekkevidde.R;
+import elbil.raekkevidde.obdConnection.io.BluetoothManager;
 import com.google.inject.Inject;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class TroubleCodesActivity extends Activity {
     SharedPreferences prefs;
     private ProgressDialog progressDialog;
     private String remoteDevice;
-    private GetTroubleCodesTask gtct;
+    //private GetTroubleCodesTask gtct;
     private BluetoothDevice dev = null;
     private BluetoothSocket sock = null;
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -107,7 +107,7 @@ public class TroubleCodesActivity extends Activity {
                     ///finish();
                     break;
                 case DATA_OK:
-                    dataOk((String) msg.obj);
+                 //   dataOk((String) msg.obj);
                     break;
 
             }
@@ -131,8 +131,8 @@ public class TroubleCodesActivity extends Activity {
             Log.e(TAG, "No Bluetooth device has been selected.");
             mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
         } else {
-            gtct = new GetTroubleCodesTask();
-            gtct.execute(remoteDevice);
+           // gtct = new GetTroubleCodesTask();
+           // gtct.execute(remoteDevice);
         }
     }
 
@@ -140,7 +140,7 @@ public class TroubleCodesActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.trouble_codes, menu);
+       // inflater.inflate(R.menu.trouble_codes, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -148,7 +148,7 @@ public class TroubleCodesActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.action_clear_codes:
+            case R.id.activity_main: //R.id.action_clear_codes:
                 try {
                     sock = BluetoothManager.connect(dev);
                 } catch (Exception e) {
@@ -176,7 +176,7 @@ public class TroubleCodesActivity extends Activity {
                                     + e.getMessage()
                     );
                 }
-                gtct.closeSocket(sock);
+              //  gtct.closeSocket(sock);
                 // Refresh main activity upon close of dialog box
                 Intent refresh = new Intent(this, TroubleCodesActivity.class);
                 startActivity(refresh);
@@ -207,6 +207,7 @@ public class TroubleCodesActivity extends Activity {
         Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
         toast.show();
     }
+    /*
     private void dataOk(String res) {
         ListView lv = (ListView) findViewById(R.id.listView);
         Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
@@ -393,5 +394,5 @@ public class TroubleCodesActivity extends Activity {
 
         }
     }
-
+*/
 }

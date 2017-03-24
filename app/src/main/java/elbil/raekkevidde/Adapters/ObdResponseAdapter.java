@@ -20,7 +20,7 @@ public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.
     private ArrayList<String> obdResponseList;
     private ArrayList<String> obdQueryList;
 
-    private class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView query, response;
 
         private MyViewHolder(View view) {
