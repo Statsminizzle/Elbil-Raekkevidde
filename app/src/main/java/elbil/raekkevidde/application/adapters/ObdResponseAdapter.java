@@ -1,4 +1,4 @@
-package elbil.raekkevidde.Adapters;
+package elbil.raekkevidde.application.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import elbil.raekkevidde.R;
+import elbil.raekkevidde.application.AppData;
 
 
 /**
@@ -16,9 +17,6 @@ import elbil.raekkevidde.R;
  */
 
 public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.MyViewHolder> {
-
-    private ArrayList<String> obdResponseList;
-    private ArrayList<String> obdQueryList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView query, response;
@@ -31,9 +29,7 @@ public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.
     }
 
 
-    public ObdResponseAdapter(ArrayList<String> obdResponseList, ArrayList<String> obdQueryList) {
-        this.obdResponseList = obdResponseList;
-        this.obdQueryList = obdQueryList;
+    public ObdResponseAdapter() {
     }
 
     @Override
@@ -46,8 +42,8 @@ public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String response = obdResponseList.get(position);
-        String query = obdQueryList.get(position);
+        String response = AppData.obdResponseList.get(position);
+        String query = AppData.obdQueryList.get(position);
         if(query == null) {
             query = "Response from ID " + response.substring(3) + ":"; //substring the ID - find correct substring
         }
@@ -57,6 +53,6 @@ public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.
 
     @Override
     public int getItemCount() {
-        return obdResponseList.size();
+        return AppData.obdResponseList.size();
     }
 }
