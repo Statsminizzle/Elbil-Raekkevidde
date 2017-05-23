@@ -10,16 +10,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package elbil.raekkevidde.application.event.events;
+package elbil.raekkevidde.application.commands;
 
-public class ItemInsertedEvent {
-    String item;
+import com.github.pires.obd.enums.ObdProtocols;
 
-    public ItemInsertedEvent(String item){
-        this.item = item;
+/**
+ * Select the protocol to use.
+ */
+public class SelectProtocolCommand extends ObdProtocolCommand {
+
+    private final ObdProtocols protocol;
+
+    public SelectProtocolCommand(final ObdProtocols protocol) {
+        super("AT SP " + protocol.getValue());
+        this.protocol = protocol;
     }
 
-    public String getItem(){
-        return item;
+    @Override
+    public String getFormattedResult() {
+        return getResult();
+    }
+
+    @Override
+    public String getName() {
+        return "Select Protocol " + protocol.name();
     }
 }

@@ -10,16 +10,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package elbil.raekkevidde.application.event.events;
+package elbil.raekkevidde.application.commands;
 
-public class ItemInsertedEvent {
-    String item;
+public abstract class ObdProtocolCommand extends ObdCommand {
 
-    public ItemInsertedEvent(String item){
-        this.item = item;
+    public ObdProtocolCommand(String command) {
+        super(command);
     }
 
-    public String getItem(){
-        return item;
+    public ObdProtocolCommand(ObdProtocolCommand other) {
+        this(other.cmd);
+    }
+
+    protected void performCalculations() {
+    }
+
+    protected void fillBuffer() {
+    }
+
+    @Override
+    public String getCalculatedResult() {
+        return String.valueOf(getResult());
     }
 }
+

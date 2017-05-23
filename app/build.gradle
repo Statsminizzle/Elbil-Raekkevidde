@@ -30,4 +30,5 @@ dependencies {
     compile 'org.roboguice:roboguice:3.0'
     provided 'org.roboguice:roboblender:3.0'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.pires:obd-java-api:1.0'
 }

@@ -1,3 +1,15 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package elbil.raekkevidde.application.service;
 
 import android.app.Notification;
@@ -7,7 +19,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -17,29 +28,20 @@ import android.util.Log;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import elbil.raekkevidde.application.AppData;
 import elbil.raekkevidde.application.commands.DisconnectCommand;
 import elbil.raekkevidde.application.commands.ReadAllCommand;
-import elbil.raekkevidde.application.commands.ReadAllResponses;
 import elbil.raekkevidde.application.commands.SetIDCommand;
-import elbil.raekkevidde.obdConnection.activity.MainActivity;
-import elbil.raekkevidde.obdConnection.io.AbstractGatewayService;
-import elbil.raekkevidde.obdConnection.io.ObdCommandJob;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
+import elbil.raekkevidde.application.ui.MainActivity;
+import elbil.raekkevidde.application.utils.ObdCommandJob;
 import roboguice.service.RoboService;
-
-/**
- * Created by Yoghurt Jr on 24-03-2017.
- */
 
 public abstract class AbstractBluetoothConnectionService extends RoboService {
     public static final int NOTIFICATION_ID = 1;
-    private static final String TAG = AbstractGatewayService.class.getName();
+    private static final String TAG = AbstractBluetoothConnectionService.class.getName();
     private final IBinder binder = new AbstractBluetoothConnectionService.AbstractBluetoothConnectionServiceBinder();
     @Inject
     protected NotificationManager notificationManager;
@@ -66,6 +68,7 @@ public abstract class AbstractBluetoothConnectionService extends RoboService {
                              */
                             executeQueue(addQueueLoopCommands());
                             updateUI();
+                            t.sleep(5000);
                         }
                 } catch (InterruptedException|IOException e) {
                     t.interrupt();

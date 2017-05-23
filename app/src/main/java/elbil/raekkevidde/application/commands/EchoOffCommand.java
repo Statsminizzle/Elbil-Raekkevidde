@@ -10,16 +10,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package elbil.raekkevidde.application.event.events;
+package elbil.raekkevidde.application.commands;
 
-public class ItemInsertedEvent {
-    String item;
+/**
+ * Turn-off echo.
+ */
+public class EchoOffCommand extends ObdProtocolCommand {
 
-    public ItemInsertedEvent(String item){
-        this.item = item;
+    public EchoOffCommand() {
+        super("AT E0");
     }
 
-    public String getItem(){
-        return item;
+    public EchoOffCommand(EchoOffCommand other) {
+        super(other);
     }
+
+    @Override
+    public String getFormattedResult() {
+        return getResult();
+    }
+
+    @Override
+    public String getName() {
+        return "Echo Off";
+    }
+
 }

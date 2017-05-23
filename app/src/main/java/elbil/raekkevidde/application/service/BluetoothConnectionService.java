@@ -1,45 +1,42 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package elbil.raekkevidde.application.service;
 
-import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.github.pires.obd.enums.ObdProtocols;
+import com.github.pires.obd.exceptions.UnsupportedCommandException;
 import com.google.inject.Inject;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 
 import elbil.raekkevidde.application.AppData;
 import elbil.raekkevidde.application.commands.DisconnectCommand;
+import elbil.raekkevidde.application.commands.EchoOffCommand;
 import elbil.raekkevidde.application.commands.ObdCommandReader;
-import elbil.raekkevidde.application.commands.ReadAllCommand;
-import elbil.raekkevidde.application.commands.SetIDCommand;
-import elbil.raekkevidde.application.event.events.ItemInsertedEvent;
+import elbil.raekkevidde.application.commands.ObdResetCommand;
+import elbil.raekkevidde.application.commands.SelectProtocolCommand;
+import elbil.raekkevidde.application.commands.TimeoutCommand;
+import elbil.raekkevidde.application.ui.ConfigurationActivity;
 import elbil.raekkevidde.application.ui.MainActivity;
-import elbil.raekkevidde.obdConnection.activity.ConfigActivity;
-import elbil.raekkevidde.obdConnection.io.AbstractGatewayService;
-import elbil.raekkevidde.obdConnection.io.BluetoothManager;
-import elbil.raekkevidde.obdConnection.io.ObdCommandJob;
-import elbil.raekkevidde.obdConnection.io.ObdGatewayService;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.EchoOffCommand;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.LineFeedOffCommand;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.SelectProtocolCommand;
-import elbil.raekkevidde.obdJavaApi.commands.protocol.TimeoutCommand;
-import elbil.raekkevidde.obdJavaApi.commands.temperature.AmbientAirTemperatureCommand;
-import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
-import elbil.raekkevidde.obdJavaApi.exceptions.UnsupportedCommandException;
-
-/**
- * Created by Yoghurt Jr on 24-03-2017.
- */
+import elbil.raekkevidde.application.utils.BluetoothManager;
+import elbil.raekkevidde.application.utils.ObdCommandJob;
 
 public class BluetoothConnectionService extends AbstractBluetoothConnectionService{
 
-    private static final String TAG = ObdGatewayService.class.getName();
+    private static final String TAG = BluetoothConnectionService.class.getName();
 
     private ObdCommandReader reader = null;
     private int jobsTaken = 0;
@@ -225,7 +222,7 @@ public class BluetoothConnectionService extends AbstractBluetoothConnectionServi
         } else {
             Log.d("Preferences = ", "NOT NULL");
         }
-        final String remoteDevice = prefs.getString(ConfigActivity.BLUETOOTH_LIST_KEY, "Idiot");
+        final String remoteDevice = prefs.getString(ConfigurationActivity.BLUETOOTH_LIST_KEY, "");
         if (remoteDevice == null || "".equals(remoteDevice)) {
             //TODO   Toast.makeText(ctx, getString(R.string.text_bluetooth_nodevice), Toast.LENGTH_LONG).show();
 
@@ -281,7 +278,6 @@ public class BluetoothConnectionService extends AbstractBluetoothConnectionServi
     public void stopService() {
         Log.d(TAG, "Stopping service..");
 
-        notificationManager.cancel(AbstractGatewayService.NOTIFICATION_ID);
         jobsQueue.clear();
         isRunning = false;
 
@@ -322,18 +318,17 @@ public class BluetoothConnectionService extends AbstractBluetoothConnectionServi
      * Will send second-time based on tests.
      */
         queueJob(new ObdCommandJob(new EchoOffCommand()));
-        //queueJob(new ObdCommandJob(new LineFeedOffCommand()));
         queueJob(new ObdCommandJob(new TimeoutCommand(62)));
 
 //        queueJob(new ObdCommandJob(new SelectProtocolCommand(ObdProtocols.ISO_15765_4_CAN_B)));
 // Get protocol from preferences
-final String protocol = prefs.getString(ConfigActivity.PROTOCOLS_LIST_KEY, "AUTO");
+        final String protocol = prefs.getString(ConfigurationActivity.PROTOCOLS_LIST_KEY, "AUTO");
         queueJob(new ObdCommandJob(new SelectProtocolCommand(ObdProtocols.valueOf(protocol))));
 
-        queueJob(new ObdCommandJob(new SetIDCommand("374")));
-        queueJob(new ObdCommandJob(new ReadAllCommand(getApplicationContext(), "374")));
+        //queueJob(new ObdCommandJob(new SetIDCommand("374")));
+        //queueJob(new ObdCommandJob(new ReadAllCommand(getApplicationContext(), "374")));
 
-        numberOfJobsInitialised = 7;
+        numberOfJobsInitialised = 5;
         queueCounter = 0L;
 
         jobsInitialised = true;

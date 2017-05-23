@@ -10,16 +10,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package elbil.raekkevidde.application.event.events;
+package elbil.raekkevidde.application.commands;
 
-public class ItemInsertedEvent {
-    String item;
+/**
+ * Reset the OBD connection.
+ *
+ */
+public class ObdResetCommand extends ObdProtocolCommand {
 
-    public ItemInsertedEvent(String item){
-        this.item = item;
+    public ObdResetCommand() {
+        super("AT Z");
     }
 
-    public String getItem(){
-        return item;
+    public ObdResetCommand(ObdResetCommand other) {
+        super(other);
+    }
+
+    @Override
+    public String getFormattedResult() {
+        return getResult();
+    }
+
+    @Override
+    public String getName() {
+        return "Reset OBD";
     }
 }

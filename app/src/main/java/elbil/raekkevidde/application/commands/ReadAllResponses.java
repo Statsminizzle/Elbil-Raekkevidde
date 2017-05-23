@@ -1,29 +1,26 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package elbil.raekkevidde.application.commands;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
+
+import com.github.pires.obd.exceptions.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import elbil.raekkevidde.application.AppData;
-import elbil.raekkevidde.application.ui.MainActivity;
-import elbil.raekkevidde.obdJavaApi.exceptions.BusInitException;
-import elbil.raekkevidde.obdJavaApi.exceptions.MisunderstoodCommandException;
-import elbil.raekkevidde.obdJavaApi.exceptions.NoDataException;
-import elbil.raekkevidde.obdJavaApi.exceptions.NonNumericResponseException;
-import elbil.raekkevidde.obdJavaApi.exceptions.ResponseException;
-import elbil.raekkevidde.obdJavaApi.exceptions.StoppedException;
-import elbil.raekkevidde.obdJavaApi.exceptions.UnableToConnectException;
-import elbil.raekkevidde.obdJavaApi.exceptions.UnknownErrorException;
-import elbil.raekkevidde.obdJavaApi.exceptions.UnsupportedCommandException;
-
-/**
- * Created by Yoghurt Jr on 18-05-2017.
- */
 
 public class ReadAllResponses {
 
@@ -41,11 +38,7 @@ public class ReadAllResponses {
     };
     protected ArrayList<Integer> buffer = null;
     protected String cmd = null;
-    protected boolean useImperialUnits = false;
     protected String rawData = null;
-    protected Long responseDelayInMs = null;
-    private long start;
-    private long end;
     private Context context;
 
     InputStream in;

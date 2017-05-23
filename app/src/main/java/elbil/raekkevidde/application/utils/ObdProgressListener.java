@@ -10,16 +10,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package elbil.raekkevidde.application.event.events;
+package elbil.raekkevidde.application.utils;
 
-public class ItemInsertedEvent {
-    String item;
+public interface ObdProgressListener {
 
-    public ItemInsertedEvent(String item){
-        this.item = item;
-    }
+    void stateUpdate(final ObdCommandJob job);
 
-    public String getItem(){
-        return item;
-    }
 }

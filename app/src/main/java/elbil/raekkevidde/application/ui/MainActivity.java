@@ -1,3 +1,15 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package elbil.raekkevidde.application.ui;
 
 import android.content.ComponentName;
@@ -15,14 +27,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.github.pires.obd.enums.AvailableCommandNames;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import elbil.raekkevidde.application.AppData;
 import elbil.raekkevidde.application.adapters.ObdResponseAdapter;
 import elbil.raekkevidde.R;
@@ -33,26 +44,11 @@ import elbil.raekkevidde.application.event.events.UpdateUIEvent;
 import elbil.raekkevidde.application.event.events.UsingWattageEvent;
 import elbil.raekkevidde.application.service.AbstractBluetoothConnectionService;
 import elbil.raekkevidde.application.service.BluetoothConnectionService;
-import elbil.raekkevidde.obdConnection.activity.ConfigActivity;
-import elbil.raekkevidde.obdConnection.io.ObdCommandJob;
-import elbil.raekkevidde.obdConnection.io.ObdProgressListener;
-import elbil.raekkevidde.obdJavaApi.enums.AvailableCommandNames;
+import elbil.raekkevidde.application.utils.ObdCommandJob;
+import elbil.raekkevidde.application.utils.ObdProgressListener;
 
 public class MainActivity extends AppCompatActivity implements ObdProgressListener {
     private static final String TAG = MainActivity.class.getName();
-    private static final int NO_BLUETOOTH_ID = 0;
-    private static final int BLUETOOTH_DISABLED = 1;
-    private static final int START_LIVE_DATA = 2;
-    private static final int STOP_LIVE_DATA = 3;
-    private static final int SETTINGS = 4;
-    private static final int GET_DTC = 5;
-    private static final int TABLE_ROW_MARGIN = 7;
-    private static final int NO_ORIENTATION_SENSOR = 8;
-    private static final int NO_GPS_SUPPORT = 9;
-    private static final int TRIPS_LIST = 10;
-    private static final int SAVE_TRIP_NOT_AVAILABLE = 11;
-    private static final int REQUEST_ENABLE_BT = 1234;
-    private static boolean bluetoothDefaultIsEnable = false;
 
     private ObdResponseAdapter mAdapter;
     private Button mButton;
@@ -112,13 +108,6 @@ public class MainActivity extends AppCompatActivity implements ObdProgressListen
 
         drivedKilometersTextView = (TextView) findViewById(R.id.DrivedKilometersTextView);
         drivedKilometersTextView.setText("");
-        //Initialise Gateway service
-
-        //Run the setup commands
-        //Create and run getDataCommand()
-        //Propagate the responses into the list
-        //notify with newResponseInserted()
-
     }
 
     @Override
@@ -314,5 +303,4 @@ public class MainActivity extends AppCompatActivity implements ObdProgressListen
         usingWattageTextView.setText(text);
         drivedKilometersTextView.setText("Drived Kilometers = " + AppData.drivedKilometers + " km");
     }
-
 }
