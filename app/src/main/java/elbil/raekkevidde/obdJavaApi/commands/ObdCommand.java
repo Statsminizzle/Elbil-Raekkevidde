@@ -11,6 +11,8 @@
  * the License.
  */
 package elbil.raekkevidde.obdJavaApi.commands;
+import android.util.Log;
+
 import elbil.raekkevidde.obdJavaApi.exceptions.*;
 
 import java.io.IOException;
@@ -58,7 +60,8 @@ public abstract class ObdCommand {
     /**
      * Prevent empty instantiation
      */
-    private ObdCommand() {
+    //Added public ctor for use in our ObdResponseReader
+    public ObdCommand() {
     }
 
     /**
@@ -140,6 +143,16 @@ public abstract class ObdCommand {
         checkForErrors();
         fillBuffer();
         performCalculations();
+        Log.d("getFormattedResult = " ,""+getFormattedResult());
+    }
+
+    protected void readResult(InputStream in, boolean processAll) throws IOException {
+        Log.d("Reading raw data " ,"now");
+        readRawDataTest(in);
+        checkForErrors();
+        fillBuffer();
+        performCalculations();
+        Log.d("getFResultAll = " ,""+getFormattedResult());
     }
 
     /**
@@ -149,10 +162,11 @@ public abstract class ObdCommand {
     protected abstract void performCalculations();
 
 
-    private static Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
-    private static Pattern BUSINIT_PATTERN = Pattern.compile("(BUS INIT)|(BUSINIT)|(\\.)");
-    private static Pattern SEARCHING_PATTERN = Pattern.compile("SEARCHING");
-    private static Pattern DIGITS_LETTERS_PATTERN = Pattern.compile("([0-9A-F])+");
+    protected static Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
+    protected static Pattern BUSINIT_PATTERN = Pattern.compile("(BUS INIT)|(BUSINIT)|(\\.)");
+    protected static Pattern SEARCHING_PATTERN = Pattern.compile("SEARCHING");
+    protected static Pattern DIGITS_LETTERS_PATTERN = Pattern.compile("([0-9A-F])+");
+    protected static Pattern ATMA_PATTERN = Pattern.compile("(ATMA)");
 
     protected String replaceAll(Pattern pattern, String input, String replacement) {
         return pattern.matcher(input).replaceAll(replacement);
@@ -174,7 +188,11 @@ public abstract class ObdCommand {
         }
 
         // read string each two chars
-        buffer.clear();
+        if (buffer != null) {
+            buffer.clear();
+        } else {
+            buffer = new ArrayList<>();
+        }
         int begin = 0;
         int end = 2;
         while (end <= rawData.length()) {
@@ -405,4 +423,45 @@ public abstract class ObdCommand {
         return cmd != null ? cmd.hashCode() : 0;
     }
 
+
+    /**
+     * Test methods
+     */
+
+    protected void readRawDataTest(InputStream in) throws IOException {
+        byte b = 0;
+        StringBuilder res = new StringBuilder();
+
+        // read until '>' arrives OR end of stream reached
+        char c;
+        int i = 0;
+        // -1 if the end of the stream is reached
+        while (((b = (byte) in.read()) > -1)) {
+            c = (char) b;
+            i++;
+            if (c == '>' | i == 12) // read until '>' arrives
+            {
+                break;
+            }
+            res.append(c);
+        }
+
+    /*
+     * Imagine the following response 41 0c 00 0d.
+     *
+     * ELM sends strings!! So, ELM puts spaces between each "byte". And pay
+     * attention to the fact that I've put the word byte in quotes, because 41
+     * is actually TWO bytes (two chars) in the socket. So, we must do some more
+     * processing..
+     */
+        rawData = removeAll(SEARCHING_PATTERN, res.toString());
+
+    /*
+     * Data may have echo or informative text like "INIT BUS..." or similar.
+     * The response ends with two carriage return characters. So we need to take
+     * everything from the last carriage return before those two (trimmed above).
+     */
+        //kills multiline.. rawData = rawData.substring(rawData.lastIndexOf(13) + 1);
+        rawData = removeAll(WHITESPACE_PATTERN, rawData);//removes all [ \t\n\x0B\f\r]
+    }
 }

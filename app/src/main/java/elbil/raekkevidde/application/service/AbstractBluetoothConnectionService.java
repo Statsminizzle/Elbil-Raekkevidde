@@ -3,9 +3,13 @@ package elbil.raekkevidde.application.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -13,12 +17,20 @@ import android.util.Log;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import elbil.raekkevidde.application.AppData;
+import elbil.raekkevidde.application.commands.DisconnectCommand;
+import elbil.raekkevidde.application.commands.ReadAllCommand;
+import elbil.raekkevidde.application.commands.ReadAllResponses;
+import elbil.raekkevidde.application.commands.SetIDCommand;
 import elbil.raekkevidde.obdConnection.activity.MainActivity;
 import elbil.raekkevidde.obdConnection.io.AbstractGatewayService;
 import elbil.raekkevidde.obdConnection.io.ObdCommandJob;
+import elbil.raekkevidde.obdJavaApi.commands.protocol.ObdResetCommand;
 import roboguice.service.RoboService;
 
 /**
@@ -34,19 +46,75 @@ public abstract class AbstractBluetoothConnectionService extends RoboService {
     protected Context ctx;
     protected boolean isRunning = false;
     protected Long queueCounter = 0L;
+    protected boolean jobsInitialised = false;
+    protected int numberOfJobsInitialised = 7;
     protected BlockingQueue<ObdCommandJob> jobsQueue = new LinkedBlockingQueue<>();
+    protected BluetoothDevice dev = null;
+    protected BluetoothSocket sock = null;
+
     // Run the executeQueue in a different thread to lighten the UI thread
     Thread t = new Thread(new Runnable() {
         @Override
         public void run() {
-            try {
-                executeQueue();
-                processInput();
-            } catch (InterruptedException e) {
-                t.interrupt();
+                try {
+                        /* Execute the initialisation commands */
+                        executeQueue();
+                        while(!t.isInterrupted()) {
+                            /* Add needed commands to the queue and execute them afterwards.
+                             * When the commands have been executed we send an updateUI event to any
+                             * subscribers
+                             */
+                            executeQueue(addQueueLoopCommands());
+                            updateUI();
+                        }
+                } catch (InterruptedException|IOException e) {
+                    t.interrupt();
+                }
             }
-        }
     });
+
+    private int addQueueLoopCommands() throws IOException, InterruptedException {
+        int numberOfJobs;
+        queueJob(new ObdCommandJob(new SetIDCommand("374")));
+        queueJob(new ObdCommandJob(new ReadAllCommand(getApplicationContext(), "374")));
+        queueJob(new ObdCommandJob(new SetIDCommand("346")));
+        queueJob(new ObdCommandJob(new ReadAllCommand(getApplicationContext(), "346")));
+        queueJob(new ObdCommandJob(new SetIDCommand("412")));
+        queueJob(new ObdCommandJob(new ReadAllCommand(getApplicationContext(), "412")));
+        numberOfJobs = 6;
+        return numberOfJobs;
+    }
+
+    private void updateUI(){
+        Log.d("Mainlooper = ", getApplicationContext().getMainLooper().getThread().getName());
+        Handler mainHandler = new Handler(getApplicationContext().getMainLooper());
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                AppData.event.UpdateUIEvent();
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
+
+    private void loopCommands() throws IOException, InterruptedException {
+        new DisconnectCommand().run(sock.getInputStream(),sock.getOutputStream());
+        try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace();}
+        clearInputStream();
+        new SetIDCommand("412").run(sock.getInputStream(), sock.getOutputStream());
+        new ReadAllCommand(getApplicationContext(), "412").run(sock.getInputStream(), sock.getOutputStream());
+        new DisconnectCommand().run(sock.getInputStream(),sock.getOutputStream());
+        try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace();}
+        clearInputStream();
+        new SetIDCommand("346").run(sock.getInputStream(), sock.getOutputStream());
+        new ReadAllCommand(getApplicationContext(), "346").run(sock.getInputStream(), sock.getOutputStream());
+        new DisconnectCommand().run(sock.getInputStream(),sock.getOutputStream());
+        clearInputStream();
+    }
+
+    protected void clearInputStream() throws IOException{
+        sock.getInputStream().skip(sock.getInputStream().available());
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -127,8 +195,12 @@ public abstract class AbstractBluetoothConnectionService extends RoboService {
     }
 
     protected abstract void executeQueue() throws InterruptedException;
+    protected abstract void executeQueue(int numberOfJobs) throws InterruptedException, IOException;
 
-    protected abstract void processInput();
+    protected abstract void processInput() throws IOException, InterruptedException;
+
+    protected abstract void processAllInput() throws IOException, InterruptedException;
+
 
     public abstract void startService() throws IOException;
 

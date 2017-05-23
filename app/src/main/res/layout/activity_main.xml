@@ -11,9 +11,66 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="elbil.raekkevidde.application.ui.MainActivity">
 
+    <Button
+        android:id="@+id/ConfigButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Config"
+        android:clickable="true"/>
+    <Button
+        android:id="@+id/StartLiveData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Live Data"
+        android:clickable="true"
+        android:layout_alignBottom="@id/ConfigButton"
+        android:layout_marginLeft="100dp"
+        />
+
+    <Button
+        android:id="@+id/StopLiveData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop live data"
+        android:clickable="true"
+        android:layout_marginLeft="140dp"
+        android:layout_alignLeft="@id/StartLiveData"/>
+
+    <TextView
+        android:id="@+id/BatteryChargeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Battery Charge = 99%"
+        android:textSize="20sp"
+        android:layout_alignLeft="@id/StopLiveData"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/UsingWattageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Using Wattage = 500W"
+        android:textSize="20sp"
+        android:layout_below="@id/BatteryChargeTextView"
+        android:layout_alignLeft="@id/BatteryChargeTextView"
+        />
+
+    <TextView
+        android:id="@+id/DrivedKilometersTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drived Kilometers = 31502 km"
+        android:textSize="20sp"
+        android:layout_below="@id/UsingWattageTextView"
+        android:layout_alignLeft="@id/UsingWattageTextView"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layout_marginTop="50dp" />
 </RelativeLayout>

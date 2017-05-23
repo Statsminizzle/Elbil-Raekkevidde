@@ -25,6 +25,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".application.ui.ConfigurationActivity"
+            android:launchMode="singleInstance"
+            android:label="Elbil-raekkevidde"></activity>
+
+        <service
+            android:name=".application.service.BluetoothConnectionService"
+            android:launchMode="singleInstance"
+            android:exported="false" />
     </application>
 
 </manifest>

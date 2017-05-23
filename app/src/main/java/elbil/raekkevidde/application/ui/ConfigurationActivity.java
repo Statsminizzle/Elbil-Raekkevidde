@@ -1,4 +1,4 @@
-package elbil.raekkevidde.obdConnection.activity;
+package elbil.raekkevidde.application.ui;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -12,26 +12,25 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
-
-import elbil.raekkevidde.R;
-import elbil.raekkevidde.obdJavaApi.commands.ObdCommand;
-import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
-//import elbil.raekkevidde.obdConnection..R;
-import elbil.raekkevidde.obdConnection.config.ObdConfig;
 
 import java.util.ArrayList;
 import java.util.Set;
 
+import elbil.raekkevidde.R;
+import elbil.raekkevidde.obdConnection.activity.ConfigActivity;
+import elbil.raekkevidde.obdConnection.config.ObdConfig;
+import elbil.raekkevidde.obdJavaApi.commands.ObdCommand;
+import elbil.raekkevidde.obdJavaApi.enums.ObdProtocols;
+
 /**
- * Configuration elbil.raekkevidde.obdConnection..activity.
+ * Created by Yoghurt Jr on 31-03-2017.
  */
-public class ConfigActivity extends PreferenceActivity implements OnPreferenceChangeListener {
+
+public class ConfigurationActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+
 
     public static final String BLUETOOTH_LIST_KEY = "bluetooth_list_preference";
     public static final String UPLOAD_URL_KEY = "upload_url_preference";
@@ -195,9 +194,9 @@ public class ConfigActivity extends PreferenceActivity implements OnPreferenceCh
     /*
      * Read preferences resources available at res/xml/preferences.xml
      */
+        //TODO addPreferencesFromResource(R.xml.preferences);
         addPreferencesFromResource(R.xml.preferences);
-
-        checkGps();
+        //checkGps();
 
         ArrayList<CharSequence> pairedDeviceStrings = new ArrayList<>();
         ArrayList<CharSequence> vals = new ArrayList<>();
@@ -265,7 +264,7 @@ public class ConfigActivity extends PreferenceActivity implements OnPreferenceCh
         final Activity thisActivity = this;
         listBtDevices.setEntries(new CharSequence[1]);
         listBtDevices.setEntryValues(new CharSequence[1]);
-        listBtDevices.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        listBtDevices.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 // see what I mean in the previous comment?
                 if (mBtAdapter == null || !mBtAdapter.isEnabled()) {
@@ -331,10 +330,10 @@ public class ConfigActivity extends PreferenceActivity implements OnPreferenceCh
 
     private void hideGPSCategory() {
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-       //TODO PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.pref_gps_category));
-    //    if (preferenceCategory != null) {
-    //        preferenceCategory.removeAll();
-     //       preferenceScreen.removePreference((Preference) preferenceCategory);
-      //  }
+        //TODO PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(getResources().getString(R.string.pref_gps_category));
+        //    if (preferenceCategory != null) {
+        //        preferenceCategory.removeAll();
+        //       preferenceScreen.removePreference((Preference) preferenceCategory);
+        //  }
     }
 }

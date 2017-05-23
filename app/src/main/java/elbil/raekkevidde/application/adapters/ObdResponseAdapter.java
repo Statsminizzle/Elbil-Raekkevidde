@@ -1,6 +1,7 @@
 package elbil.raekkevidde.application.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,13 +43,17 @@ public class ObdResponseAdapter extends RecyclerView.Adapter<ObdResponseAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String response = AppData.obdResponseList.get(position);
-        String query = AppData.obdQueryList.get(position);
-        if(query == null) {
-            query = "Response from ID " + response.substring(3) + ":"; //substring the ID - find correct substring
+        if(AppData.obdResponseList.size() != 0 && AppData.obdQueryList.size() != 0) {
+            Log.d("Recyclerview", "har data");
+            String response = AppData.obdResponseList.get(position);
+            String query = AppData.obdQueryList.get(position);
+            Log.d("Response = " + response, "query = " + query);
+            if (query == null) {
+                query = "Response from ID " + response.substring(3) + ":"; //substring the ID - find correct substring
+            }
+            holder.query.setText(query);
+            holder.response.setText(response);
         }
-        holder.query.setText(query);
-        holder.response.setText(response);
     }
 
     @Override
